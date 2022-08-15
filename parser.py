@@ -1,8 +1,9 @@
 import requests
+import csv
 from bs4 import BeautifulSoup
 
 
-def get_urls():
+def get_urls(save_to_file = False):
     URL = "https://distrowatch.com/search.php?status=All"
     response = requests.get(URL)
 
@@ -15,6 +16,12 @@ def get_urls():
     URL_list = []
     for a_tag in b_tags[1].find_all("a", href=True):
         URL_list.append("https://distrowatch.com/" + a_tag["href"])
+
+    if save_to_file is True:
+        with open('urls.txt', 'w') as f:
+            for line in URL_list[3:]:
+                f.write(f"{line}\n")
+
     return URL_list
 
 def get_distro_list():
